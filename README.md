@@ -51,11 +51,11 @@ starts the bot, without waiting for a reboot.
 | `DISCORD_TOKEN` | Discord bot token |
 | `PANEL_CHANNEL_ID` | Channel where the server control panel is displayed |
 | `BACKLOG_CHANNEL_ID` | Channel where commands are sent to the WindowsGSM bot |
-| `SETTINGS_CHANNEL_ID` | Channel for the language settings panel (optional) |
+| `SETTINGS_CHANNEL_ID` | Channel for the settings panel (language, wait time - optional) |
 | `SERVER_ID` | ID of the server managed by WindowsGSM |
 | `CMD_PREFIX` | Command prefix for the WindowsGSM bot (default `!wgsm`) |
 | `WGSM_BOT_ID` | ID of the WindowsGSM bot (to identify its responses) |
-| `WAIT_MS` | Delay to wait for a response before timing out (ms) |
+| `WAIT_MS` | Initial delay to wait for a response before timing out (ms), overridden at runtime via the settings panel |
 | `BACKUPS_CHANNEL_ID` | Channel for the backups management panel (optional) |
 | `BACKUPS_LOG_CHANNEL_ID` | Log channel for restorations |
 | `PROSPECTS_DIR` | Local path to the Icarus saves folder |

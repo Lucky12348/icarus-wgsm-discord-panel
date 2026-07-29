@@ -12,9 +12,11 @@ async function loadSettings() {
   }
 }
 
-async function saveSettings(settings) {
+async function saveSettings(partialSettings) {
+  const current = await loadSettings();
+  const merged = { ...current, ...partialSettings };
   await fs.mkdir(path.dirname(SETTINGS_PATH), { recursive: true });
-  await fs.writeFile(SETTINGS_PATH, JSON.stringify(settings, null, 2), "utf8");
+  await fs.writeFile(SETTINGS_PATH, JSON.stringify(merged, null, 2), "utf8");
 }
 
 module.exports = { loadSettings, saveSettings };

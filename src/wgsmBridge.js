@@ -1,5 +1,5 @@
 const { Events } = require("discord.js");
-const { PREFIX, SERVER_ID, BACKLOG_CHANNEL_ID, WGSM_BOT_ID, WAIT_MS } = require("./config");
+const { PREFIX, SERVER_ID, BACKLOG_CHANNEL_ID, WGSM_BOT_ID, getWaitMs } = require("./config");
 
 // Only one WGSM command in flight at a time, so a backlog reply can never
 // be matched to the wrong pending command.
@@ -54,7 +54,7 @@ async function runWgsmCommand(client, cmd) {
         currentCommand = null;
         resolve({ timedOut: true });
       }
-    }, WAIT_MS);
+    }, getWaitMs());
     currentCommand = entry;
   });
 }

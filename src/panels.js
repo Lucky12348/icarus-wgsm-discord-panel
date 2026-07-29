@@ -6,9 +6,14 @@ const {
   BACKUPS_LOG_CHANNEL_ID,
   SETTINGS_CHANNEL_ID,
   PROSPECTS_DIR,
+  getWaitMs,
 } = require("./config");
 const { t, getLanguage, getSupportedLanguages } = require("./i18n");
 const { styled, COLORS } = require("./ui");
+
+// Presets offered in the settings panel for how long the bot waits for the
+// WindowsGSM bot to answer before giving up (seconds).
+const WAIT_MS_PRESETS = [30, 60, 120, 180, 300];
 
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -69,7 +74,7 @@ async function setupSettingsPanel(client) {
   const settingsChannel = await client.channels.fetch(SETTINGS_CHANNEL_ID);
   await clearChannel(settingsChannel);
 
-  const select = new StringSelectMenuBuilder()
+  const langSelect = new StringSelectMenuBuilder()
     .setCustomId("settings_lang_select")
     .setPlaceholder(t("panelSettings.selectPlaceholder"))
     .addOptions(
@@ -80,10 +85,22 @@ async function setupSettingsPanel(client) {
       }))
     );
 
+  const currentWaitMs = getWaitMs();
+  const timeoutSelect = new StringSelectMenuBuilder()
+    .setCustomId("settings_timeout_select")
+    .setPlaceholder(t("panelSettings.timeoutPlaceholder"))
+    .addOptions(
+      WAIT_MS_PRESETS.map((seconds) => ({
+        label: `${seconds}s`,
+        value: String(seconds * 1000),
+        default: seconds * 1000 === currentWaitMs,
+      }))
+    );
+
   await settingsChannel.send(
     styled(t("panelSettings.intro"), {
       color: COLORS.BRAND,
-      actionRows: [new ActionRowBuilder().addComponents(select)],
+      actionRows: [new ActionRowBuilder().addComponents(langSelect), new ActionRowBuilder().addComponents(timeoutSelect)],
     })
   );
 }

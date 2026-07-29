@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } 
 const fs = require("fs/promises");
 const path = require("path");
 const { t, setLanguage, getSupportedLanguages } = require("../i18n");
-const { PROSPECTS_DIR } = require("../config");
+const { PROSPECTS_DIR, setWaitMs } = require("../config");
 const { listBackupsForMap } = require("../backups");
 const { fmtDate, fmtSize } = require("../format");
 const { saveSettings } = require("../settingsStore");
@@ -27,6 +27,9 @@ async function handleSelectMenuInteraction(client, interaction) {
   }
   if (customId === "settings_lang_select") {
     return handleLanguageSelect(client, interaction);
+  }
+  if (customId === "settings_timeout_select") {
+    return handleTimeoutSelect(client, interaction);
   }
 }
 
@@ -136,6 +139,30 @@ async function handleLanguageSelect(client, interaction) {
     await setupPanels(client);
   } catch (err) {
     console.error("Failed to refresh panels after a language change:", err);
+  }
+}
+
+async function handleTimeoutSelect(client, interaction) {
+  const waitMs = Number(interaction.values[0]);
+  if (!Number.isFinite(waitMs) || waitMs <= 0) return;
+
+  setWaitMs(waitMs);
+  try {
+    await saveSettings({ waitMs });
+  } catch (err) {
+    console.error("Could not persist the wait time setting:", err);
+  }
+
+  await interaction.deferReply({ ephemeral: true });
+  await interaction.editReply(
+    styled(t("panelSettings.timeoutChanged", { seconds: Math.round(waitMs / 1000) }), { color: COLORS.SUCCESS })
+  );
+
+  // Re-render the settings panel so the new default is pre-selected.
+  try {
+    await setupPanels(client);
+  } catch (err) {
+    console.error("Failed to refresh panels after a wait time change:", err);
   }
 }
 

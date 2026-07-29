@@ -1,7 +1,7 @@
 const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const path = require("path");
 const { t } = require("../i18n");
-const { PREFIX, SERVER_ID, BACKLOG_CHANNEL_ID, BACKUPS_LOG_CHANNEL_ID, WAIT_MS } = require("../config");
+const { PREFIX, SERVER_ID, BACKLOG_CHANNEL_ID, BACKUPS_LOG_CHANNEL_ID, getWaitMs } = require("../config");
 const { buildWgsmCommand, isBusy, getCurrentCommand, runWgsmCommand } = require("../wgsmBridge");
 const { listMapsWithLastSave, restoreBackup } = require("../backups");
 const { fmtDate, delay } = require("../format");
@@ -42,7 +42,7 @@ async function handleWgsmButton(client, interaction) {
 
   if (result.timedOut) {
     return interaction.editReply(
-      styled(t("errors.commandTimeout", { seconds: Math.round(WAIT_MS / 1000), channel: BACKLOG_CHANNEL_ID }), {
+      styled(t("errors.commandTimeout", { seconds: Math.round(getWaitMs() / 1000), channel: BACKLOG_CHANNEL_ID }), {
         color: COLORS.DANGER,
       })
     );
@@ -114,7 +114,7 @@ async function handleBackupConfirm(client, interaction) {
   const stopResult = await runWgsmCommand(client, stopCmd);
   if (stopResult.timedOut) {
     return interaction.editReply(
-      styled(t("restore.stopTimeout", { seconds: Math.round(WAIT_MS / 1000), channel: BACKLOG_CHANNEL_ID }), {
+      styled(t("restore.stopTimeout", { seconds: Math.round(getWaitMs() / 1000), channel: BACKLOG_CHANNEL_ID }), {
         color: COLORS.DANGER,
       })
     );
@@ -167,7 +167,7 @@ async function handleBackupConfirm(client, interaction) {
         t("restore.startTimeout", {
           backup: backupFile,
           map: mapName,
-          seconds: Math.round(WAIT_MS / 1000),
+          seconds: Math.round(getWaitMs() / 1000),
           channel: BACKLOG_CHANNEL_ID,
         }),
         { color: COLORS.DANGER }

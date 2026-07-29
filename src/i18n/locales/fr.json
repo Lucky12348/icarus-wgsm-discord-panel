@@ -32,6 +32,8 @@
   "panelSettings.languageFr": "🇫🇷 Français",
   "panelSettings.languageEn": "🇬🇧 English",
   "panelSettings.changed": "✅ Langue définie sur **{language}**.",
+  "panelSettings.timeoutPlaceholder": "Choisir un délai d'attente…",
+  "panelSettings.timeoutChanged": "✅ Délai d'attente défini sur **{seconds}s**.",
 
   "backupFlow.selectMapPlaceholder": "Choisir une map…",
   "backupFlow.selectMapPrompt": "Sélectionne une **map** pour voir ses backups (avec date/heure).",

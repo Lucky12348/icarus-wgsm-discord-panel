@@ -22,6 +22,7 @@ client.once(Events.ClientReady, async () => {
   try {
     const settings = await loadSettings();
     if (settings.language) setLanguage(settings.language);
+    if (settings.waitMs) config.setWaitMs(settings.waitMs);
   } catch (err) {
     console.error("Could not load persisted settings, falling back to the default language:", err);
   }
