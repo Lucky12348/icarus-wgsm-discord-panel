@@ -7,6 +7,11 @@ const { listMapsWithLastSave, restoreBackup } = require("../backups");
 const { fmtDate, delay } = require("../format");
 const { styled, COLORS } = require("../ui");
 
+// WGSM refuses to update a running server with this exact kind of reply
+// ("Server (ID: 1) currently in Started state, not able to update.") -
+// matching on the stable core phrase rather than the full sentence.
+const UPDATE_BLOCKED_PATTERN = /not able to update/i;
+
 async function handleButtonInteraction(client, interaction) {
   const { customId } = interaction;
 
@@ -38,6 +43,11 @@ async function handleWgsmButton(client, interaction) {
   }
 
   await interaction.deferReply({ ephemeral: true });
+
+  if (action === "update") {
+    return handleUpdate(client, interaction, cmd);
+  }
+
   const result = await runWgsmCommand(client, cmd);
 
   if (result.timedOut) {
@@ -50,6 +60,75 @@ async function handleWgsmButton(client, interaction) {
 
   return interaction.editReply(
     styled(t("result.generic", { text: result.text ?? t("common.emptyReply") }), { color: COLORS.SUCCESS })
+  );
+}
+
+// WGSM won't update a running server, so if it refuses for that reason we
+// stop it, retry the update, then restart it automatically - no more manual
+// stop-then-update dance.
+async function handleUpdate(client, interaction, updateCmd) {
+  const firstAttempt = await runWgsmCommand(client, updateCmd);
+
+  if (firstAttempt.timedOut) {
+    return interaction.editReply(
+      styled(t("errors.commandTimeout", { seconds: Math.round(getWaitMs() / 1000), channel: BACKLOG_CHANNEL_ID }), {
+        color: COLORS.DANGER,
+      })
+    );
+  }
+
+  if (!firstAttempt.text || !UPDATE_BLOCKED_PATTERN.test(firstAttempt.text)) {
+    return interaction.editReply(
+      styled(t("result.generic", { text: firstAttempt.text ?? t("common.emptyReply") }), { color: COLORS.SUCCESS })
+    );
+  }
+
+  // Server is running - stop it first.
+  const stopCmd = `${PREFIX} stop ${SERVER_ID}`;
+  await interaction.editReply(styled(t("update.stopping", { cmd: stopCmd }), { color: COLORS.BRAND }));
+
+  const stopResult = await runWgsmCommand(client, stopCmd);
+  if (stopResult.timedOut) {
+    return interaction.editReply(
+      styled(t("update.stopTimeout", { seconds: Math.round(getWaitMs() / 1000), channel: BACKLOG_CHANNEL_ID }), {
+        color: COLORS.DANGER,
+      })
+    );
+  }
+
+  // Small grace period so the OS releases file handles after shutdown.
+  await delay(3000);
+
+  await interaction.editReply(styled(t("update.updating", { cmd: updateCmd }), { color: COLORS.BRAND }));
+  const updateResult = await runWgsmCommand(client, updateCmd);
+
+  if (updateResult.timedOut) {
+    return interaction.editReply(
+      styled(t("update.updateTimeout", { seconds: Math.round(getWaitMs() / 1000), channel: BACKLOG_CHANNEL_ID }), {
+        color: COLORS.DANGER,
+      })
+    );
+  }
+
+  if (updateResult.text && UPDATE_BLOCKED_PATTERN.test(updateResult.text)) {
+    return interaction.editReply(styled(t("update.stillBlocked", { text: updateResult.text }), { color: COLORS.DANGER }));
+  }
+
+  // Bring the server back up now that the update is done.
+  const startCmd = `${PREFIX} start ${SERVER_ID}`;
+  await interaction.editReply(styled(t("update.restarting", { cmd: startCmd }), { color: COLORS.BRAND }));
+
+  const startResult = await runWgsmCommand(client, startCmd);
+  if (startResult.timedOut) {
+    return interaction.editReply(
+      styled(t("update.restartTimeout", { seconds: Math.round(getWaitMs() / 1000), channel: BACKLOG_CHANNEL_ID }), {
+        color: COLORS.DANGER,
+      })
+    );
+  }
+
+  return interaction.editReply(
+    styled(t("update.success", { text: updateResult.text ?? t("common.emptyReply") }), { color: COLORS.SUCCESS })
   );
 }
 

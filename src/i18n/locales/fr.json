@@ -51,5 +51,14 @@
   "restore.startTimeout": "✅ Backup restauré : `{backup}` → `{map}.json`\n\n⚠️ Aucune réponse au démarrage en {seconds}s.\n👉 Vérifie <#{channel}>.",
   "restore.success": "✅ Backup restauré : `{backup}` → `{map}.json`\n▶️ Serveur redémarré.\n\n🧾 **Résultat :**\n\n{text}",
   "restore.logEntry": "# 📦 Restore\n\n👤 Utilisateur : <@{userId}>\n🗺️ Map : **{map}**\n⬅️ Backup : `{backup}`\n➡️ Active : `{map}.json`{preRestoreLine}\n\n🕒 {date}",
-  "restore.preRestoreLine": "\n🛟 Ancienne active : `{file}`"
+  "restore.preRestoreLine": "\n🛟 Ancienne active : `{file}`",
+
+  "update.stopping": "⏹️ Le serveur tourne, arrêt avant mise à jour : `{cmd}`\n\n⏳ Attente de la réponse...",
+  "update.stopTimeout": "⚠️ Aucune réponse à l'arrêt du serveur en {seconds}s.\n\n👉 Vérifie <#{channel}> avant de réessayer.",
+  "update.updating": "🔄 Mise à jour en cours : `{cmd}`\n\n⏳ Attente de la réponse...",
+  "update.updateTimeout": "⚠️ Aucune réponse à la mise à jour en {seconds}s.\n\n👉 Vérifie <#{channel}> — le serveur reste arrêté, pense à le redémarrer manuellement depuis le panel.",
+  "update.stillBlocked": "❌ La mise à jour est toujours refusée par WindowsGSM après l'arrêt du serveur.\n\nDétail : `{text}`\n\n👉 Le serveur reste arrêté, pense à le redémarrer manuellement depuis le panel.",
+  "update.restarting": "✅ Mise à jour terminée.\n\n▶️ Redémarrage du serveur : `{cmd}`\n⏳ Attente de la réponse...",
+  "update.restartTimeout": "✅ Mise à jour terminée.\n\n⚠️ Aucune réponse au redémarrage en {seconds}s.\n👉 Vérifie <#{channel}>.",
+  "update.success": "✅ Mise à jour terminée, serveur redémarré.\n\n🧾 **Résultat :**\n\n{text}"
 }

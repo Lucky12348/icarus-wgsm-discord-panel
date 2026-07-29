@@ -51,5 +51,14 @@
   "restore.startTimeout": "✅ Backup restored: `{backup}` → `{map}.json`\n\n⚠️ No response to the start command within {seconds}s.\n👉 Check <#{channel}>.",
   "restore.success": "✅ Backup restored: `{backup}` → `{map}.json`\n▶️ Server restarted.\n\n🧾 **Result:**\n\n{text}",
   "restore.logEntry": "# 📦 Restore\n\n👤 User: <@{userId}>\n🗺️ Map: **{map}**\n⬅️ Backup: `{backup}`\n➡️ Active: `{map}.json`{preRestoreLine}\n\n🕒 {date}",
-  "restore.preRestoreLine": "\n🛟 Previous active save: `{file}`"
+  "restore.preRestoreLine": "\n🛟 Previous active save: `{file}`",
+
+  "update.stopping": "⏹️ The server is running, stopping it before updating: `{cmd}`\n\n⏳ Waiting for response...",
+  "update.stopTimeout": "⚠️ No response to the stop command within {seconds}s.\n\n👉 Check <#{channel}> before retrying.",
+  "update.updating": "🔄 Updating: `{cmd}`\n\n⏳ Waiting for response...",
+  "update.updateTimeout": "⚠️ No response to the update command within {seconds}s.\n\n👉 Check <#{channel}> — the server remains stopped, remember to restart it manually from the panel.",
+  "update.stillBlocked": "❌ WindowsGSM still refuses to update even after stopping the server.\n\nDetail: `{text}`\n\n👉 The server remains stopped, remember to restart it manually from the panel.",
+  "update.restarting": "✅ Update done.\n\n▶️ Restarting the server: `{cmd}`\n⏳ Waiting for response...",
+  "update.restartTimeout": "✅ Update done.\n\n⚠️ No response to the start command within {seconds}s.\n👉 Check <#{channel}>.",
+  "update.success": "✅ Update done, server restarted.\n\n🧾 **Result:**\n\n{text}"
 }
