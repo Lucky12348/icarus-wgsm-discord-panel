@@ -14,20 +14,20 @@
   "errors.listBackupsFailed": "❌ Impossible de lister les backups.\n\nDétail : `{error}`",
   "errors.noBackupsForMap": "⚠️ Aucun backup trouvé pour **{map}** (fichiers `{map}.json.backup*`).",
 
-  "result.generic": "🧾 **Résultat :**\n\n```\n{text}\n```",
+  "result.generic": "# 🧾 Résultat\n\n```\n{text}\n```",
 
-  "panelWgsm.intro": "🎮 **Panel WindowsGSM**\n\n➡️ Exécution & logs dans <#{channel}>",
+  "panelWgsm.intro": "# 🎮 Panel WindowsGSM\n\n➡️ Exécution & logs dans <#{channel}>",
   "panelWgsm.buttonStart": "Démarrer",
   "panelWgsm.buttonStop": "Arrêter",
   "panelWgsm.buttonRestart": "Redémarrer",
   "panelWgsm.buttonUpdate": "Mettre à jour",
   "panelWgsm.buttonInfo": "Infos",
 
-  "panelBackups.intro": "📦 **Backups Icarus**\n\n📁 Dossier : `{dir}`\n📝 Log : <#{channel}>",
+  "panelBackups.intro": "# 📦 Backups Icarus\n\n📁 Dossier : `{dir}`\n📝 Log : <#{channel}>",
   "panelBackups.buttonManage": "Gérer les sauvegardes",
   "panelBackups.buttonRefresh": "Actualiser",
 
-  "panelSettings.intro": "⚙️ **Réglages**\n\nChoisis la langue du bot ci-dessous.",
+  "panelSettings.intro": "# ⚙️ Réglages\n\nChoisis la langue du bot ci-dessous.",
   "panelSettings.selectPlaceholder": "Choisir une langue…",
   "panelSettings.languageFr": "🇫🇷 Français",
   "panelSettings.languageEn": "🇬🇧 English",
@@ -37,7 +37,7 @@
   "backupFlow.selectMapPrompt": "Sélectionne une **map** pour voir ses backups (avec date/heure).",
   "backupFlow.selectBackupPlaceholder": "Choisir un backup à restaurer…",
   "backupFlow.selectBackupPrompt": "Map : **{map}**\n\nChoisis un **backup** (date/heure + taille).",
-  "backupFlow.confirmPrompt": "⚠️ **Confirmation**\n\n🗺️ Map : **{map}**\n💾 Backup choisi : `{backup}`{infoLine}\n\n⏹️ Le serveur va d'abord être **arrêté**, puis l'actuel `{map}.json` sera renommé en `.pre_restore_...` avant d'activer ce backup.\n\n▶️ Le serveur sera ensuite **redémarré automatiquement**.",
+  "backupFlow.confirmPrompt": "# ⚠️ Confirmation\n\n🗺️ Map : **{map}**\n💾 Backup choisi : `{backup}`{infoLine}\n\n⏹️ Le serveur va d'abord être **arrêté**, puis l'actuel `{map}.json` sera renommé en `.pre_restore_...` avant d'activer ce backup.\n\n▶️ Le serveur sera ensuite **redémarré automatiquement**.",
   "backupFlow.confirmInfoLine": "\n🕒 Backup : **{date}** • {size}",
   "backupFlow.confirmButtonConfirm": "Confirmer la restauration",
   "backupFlow.confirmButtonCancel": "Annuler",
@@ -48,6 +48,6 @@
   "restore.starting": "✅ Backup restauré : `{backup}` → `{map}.json`\n\n▶️ Démarrage du serveur : `{cmd}`\n⏳ Attente de la réponse...",
   "restore.startTimeout": "✅ Backup restauré : `{backup}` → `{map}.json`\n\n⚠️ Aucune réponse au démarrage en {seconds}s.\n👉 Vérifie <#{channel}>.",
   "restore.success": "✅ Backup restauré : `{backup}` → `{map}.json`\n▶️ Serveur redémarré.\n\n🧾 **Résultat :**\n\n```\n{text}\n```",
-  "restore.logEntry": "📦 **Restore**\n\n👤 Utilisateur : <@{userId}>\n🗺️ Map : **{map}**\n⬅️ Backup : `{backup}`\n➡️ Active : `{map}.json`{preRestoreLine}\n\n🕒 {date}",
+  "restore.logEntry": "# 📦 Restore\n\n👤 Utilisateur : <@{userId}>\n🗺️ Map : **{map}**\n⬅️ Backup : `{backup}`\n➡️ Active : `{map}.json`{preRestoreLine}\n\n🕒 {date}",
   "restore.preRestoreLine": "\n🛟 Ancienne active : `{file}`"
 }

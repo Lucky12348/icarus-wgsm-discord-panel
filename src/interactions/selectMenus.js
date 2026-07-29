@@ -7,6 +7,7 @@ const { listBackupsForMap } = require("../backups");
 const { fmtDate, fmtSize } = require("../format");
 const { saveSettings } = require("../settingsStore");
 const { setupPanels } = require("../panels");
+const { styled, COLORS } = require("../ui");
 
 // Backups session per user (to keep context between menus)
 const backupSessions = new Map(); // userId -> { mapName }
@@ -32,7 +33,7 @@ async function handleSelectMenuInteraction(client, interaction) {
 async function handleMapSelect(interaction) {
   const userId = interaction.customId.split(":")[1];
   if (interaction.user.id !== userId) {
-    return interaction.reply({ content: t("common.notYourAction"), ephemeral: true });
+    return interaction.reply(styled(t("common.notYourAction"), { color: COLORS.DANGER, ephemeral: true }));
   }
 
   const mapName = interaction.values[0];
@@ -44,12 +45,14 @@ async function handleMapSelect(interaction) {
   try {
     backups = await listBackupsForMap(mapName);
   } catch (e) {
-    return interaction.editReply(t("errors.listBackupsFailed", { error: String(e.message || e) }));
+    return interaction.editReply(
+      styled(t("errors.listBackupsFailed", { error: String(e.message || e) }), { color: COLORS.DANGER })
+    );
   }
 
   const onlyBackups = backups.filter((b) => b.kind === "backup");
   if (!onlyBackups.length) {
-    return interaction.editReply(t("errors.noBackupsForMap", { map: mapName }));
+    return interaction.editReply(styled(t("errors.noBackupsForMap", { map: mapName }), { color: COLORS.DANGER }));
   }
 
   const options = onlyBackups.slice(0, 25).map((b) => ({
@@ -63,10 +66,12 @@ async function handleMapSelect(interaction) {
     .setPlaceholder(t("backupFlow.selectBackupPlaceholder"))
     .addOptions(options);
 
-  return interaction.editReply({
-    content: t("backupFlow.selectBackupPrompt", { map: mapName }),
-    components: [new ActionRowBuilder().addComponents(select)],
-  });
+  return interaction.editReply(
+    styled(t("backupFlow.selectBackupPrompt", { map: mapName }), {
+      color: COLORS.BRAND,
+      actionRows: [new ActionRowBuilder().addComponents(select)],
+    })
+  );
 }
 
 async function handleBackupSelect(interaction) {
@@ -75,7 +80,7 @@ async function handleBackupSelect(interaction) {
   const mapName = decodeURIComponent(parts.slice(2).join(":") || "");
 
   if (interaction.user.id !== userId) {
-    return interaction.reply({ content: t("common.notYourAction"), ephemeral: true });
+    return interaction.reply(styled(t("common.notYourAction"), { color: COLORS.DANGER, ephemeral: true }));
   }
 
   const backupFile = interaction.values[0];
@@ -102,10 +107,12 @@ async function handleBackupSelect(interaction) {
     // ignore
   }
 
-  return interaction.editReply({
-    content: t("backupFlow.confirmPrompt", { map: mapName, backup: backupFile, infoLine }),
-    components: [confirmRow],
-  });
+  return interaction.editReply(
+    styled(t("backupFlow.confirmPrompt", { map: mapName, backup: backupFile, infoLine }), {
+      color: COLORS.WARNING,
+      actionRows: [confirmRow],
+    })
+  );
 }
 
 async function handleLanguageSelect(client, interaction) {
@@ -122,7 +129,7 @@ async function handleLanguageSelect(client, interaction) {
   await interaction.deferReply({ ephemeral: true });
 
   const languageName = t(`panelSettings.language${capitalize(lang)}`);
-  await interaction.editReply(t("panelSettings.changed", { language: languageName }));
+  await interaction.editReply(styled(t("panelSettings.changed", { language: languageName }), { color: COLORS.SUCCESS }));
 
   // Re-render every panel so button labels/text reflect the new language.
   try {

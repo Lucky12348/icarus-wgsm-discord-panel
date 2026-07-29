@@ -8,6 +8,7 @@ const {
   PROSPECTS_DIR,
 } = require("./config");
 const { t, getLanguage, getSupportedLanguages } = require("./i18n");
+const { styled, COLORS } = require("./ui");
 
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -38,10 +39,9 @@ async function setupWgsmPanel(client) {
     new ButtonBuilder().setCustomId("wgsm_info").setLabel(t("panelWgsm.buttonInfo")).setStyle(ButtonStyle.Secondary),
   );
 
-  await panelChannel.send({
-    content: t("panelWgsm.intro", { channel: BACKLOG_CHANNEL_ID }),
-    components: [wgsmRow],
-  });
+  await panelChannel.send(
+    styled(t("panelWgsm.intro", { channel: BACKLOG_CHANNEL_ID }), { color: COLORS.BRAND, actionRows: [wgsmRow] })
+  );
 }
 
 async function setupBackupsPanel(client) {
@@ -55,10 +55,12 @@ async function setupBackupsPanel(client) {
     new ButtonBuilder().setCustomId("bk_refresh").setLabel(t("panelBackups.buttonRefresh")).setStyle(ButtonStyle.Secondary),
   );
 
-  await backupsChannel.send({
-    content: t("panelBackups.intro", { dir: PROSPECTS_DIR, channel: BACKUPS_LOG_CHANNEL_ID }),
-    components: [backupsRow],
-  });
+  await backupsChannel.send(
+    styled(t("panelBackups.intro", { dir: PROSPECTS_DIR, channel: BACKUPS_LOG_CHANNEL_ID }), {
+      color: COLORS.BRAND,
+      actionRows: [backupsRow],
+    })
+  );
 }
 
 async function setupSettingsPanel(client) {
@@ -78,10 +80,12 @@ async function setupSettingsPanel(client) {
       }))
     );
 
-  await settingsChannel.send({
-    content: t("panelSettings.intro"),
-    components: [new ActionRowBuilder().addComponents(select)],
-  });
+  await settingsChannel.send(
+    styled(t("panelSettings.intro"), {
+      color: COLORS.BRAND,
+      actionRows: [new ActionRowBuilder().addComponents(select)],
+    })
+  );
 }
 
 async function setupPanels(client) {

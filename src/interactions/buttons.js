@@ -5,6 +5,7 @@ const { PREFIX, SERVER_ID, BACKLOG_CHANNEL_ID, BACKUPS_LOG_CHANNEL_ID, WAIT_MS }
 const { buildWgsmCommand, isBusy, getCurrentCommand, runWgsmCommand } = require("../wgsmBridge");
 const { listMapsWithLastSave, restoreBackup } = require("../backups");
 const { fmtDate, delay } = require("../format");
+const { styled, COLORS } = require("../ui");
 
 async function handleButtonInteraction(client, interaction) {
   const { customId } = interaction;
@@ -26,13 +27,14 @@ async function handleButtonInteraction(client, interaction) {
 async function handleWgsmButton(client, interaction) {
   const action = interaction.customId.replace("wgsm_", "");
   const cmd = buildWgsmCommand(action);
-  if (!cmd) return interaction.reply({ content: t("errors.unknownCommand"), ephemeral: true });
+  if (!cmd) {
+    return interaction.reply(styled(t("errors.unknownCommand"), { color: COLORS.DANGER, ephemeral: true }));
+  }
 
   if (isBusy()) {
-    return interaction.reply({
-      content: t("errors.commandBusy", { cmd: getCurrentCommand().cmd }),
-      ephemeral: true,
-    });
+    return interaction.reply(
+      styled(t("errors.commandBusy", { cmd: getCurrentCommand().cmd }), { color: COLORS.WARNING, ephemeral: true })
+    );
   }
 
   await interaction.deferReply({ ephemeral: true });
@@ -40,11 +42,15 @@ async function handleWgsmButton(client, interaction) {
 
   if (result.timedOut) {
     return interaction.editReply(
-      t("errors.commandTimeout", { seconds: Math.round(WAIT_MS / 1000), channel: BACKLOG_CHANNEL_ID })
+      styled(t("errors.commandTimeout", { seconds: Math.round(WAIT_MS / 1000), channel: BACKLOG_CHANNEL_ID }), {
+        color: COLORS.DANGER,
+      })
     );
   }
 
-  return interaction.editReply(t("result.generic", { text: result.text ?? t("common.emptyReply") }));
+  return interaction.editReply(
+    styled(t("result.generic", { text: result.text ?? t("common.emptyReply") }), { color: COLORS.SUCCESS })
+  );
 }
 
 async function handleBackupsOpen(interaction) {
@@ -54,11 +60,13 @@ async function handleBackupsOpen(interaction) {
   try {
     maps = await listMapsWithLastSave();
   } catch (e) {
-    return interaction.editReply(t("errors.listMapsFailed", { error: String(e.message || e) }));
+    return interaction.editReply(
+      styled(t("errors.listMapsFailed", { error: String(e.message || e) }), { color: COLORS.DANGER })
+    );
   }
 
   if (!maps.length) {
-    return interaction.editReply(t("errors.noMaps"));
+    return interaction.editReply(styled(t("errors.noMaps"), { color: COLORS.DANGER }));
   }
 
   const options = maps.slice(0, 25).map((m) => ({
@@ -72,10 +80,12 @@ async function handleBackupsOpen(interaction) {
     .setPlaceholder(t("backupFlow.selectMapPlaceholder"))
     .addOptions(options);
 
-  return interaction.editReply({
-    content: t("backupFlow.selectMapPrompt"),
-    components: [new ActionRowBuilder().addComponents(select)],
-  });
+  return interaction.editReply(
+    styled(t("backupFlow.selectMapPrompt"), {
+      color: COLORS.BRAND,
+      actionRows: [new ActionRowBuilder().addComponents(select)],
+    })
+  );
 }
 
 async function handleBackupConfirm(client, interaction) {
@@ -87,22 +97,26 @@ async function handleBackupConfirm(client, interaction) {
   const backupFile = decodeURIComponent(parts.slice(3).join(":") || "");
 
   if (interaction.user.id !== userId) {
-    return interaction.editReply(t("common.notYourAction"));
+    return interaction.editReply(styled(t("common.notYourAction"), { color: COLORS.DANGER }));
   }
 
   if (isBusy()) {
-    return interaction.editReply(t("errors.commandBusyRetry", { cmd: getCurrentCommand().cmd }));
+    return interaction.editReply(
+      styled(t("errors.commandBusyRetry", { cmd: getCurrentCommand().cmd }), { color: COLORS.WARNING })
+    );
   }
 
   // 1. Stop the server before touching the save file - otherwise it may be
   //    locked, or overwritten by the still-running server, on Windows.
   const stopCmd = `${PREFIX} stop ${SERVER_ID}`;
-  await interaction.editReply(t("restore.stopping", { cmd: stopCmd }));
+  await interaction.editReply(styled(t("restore.stopping", { cmd: stopCmd }), { color: COLORS.BRAND }));
 
   const stopResult = await runWgsmCommand(client, stopCmd);
   if (stopResult.timedOut) {
     return interaction.editReply(
-      t("restore.stopTimeout", { seconds: Math.round(WAIT_MS / 1000), channel: BACKLOG_CHANNEL_ID })
+      styled(t("restore.stopTimeout", { seconds: Math.round(WAIT_MS / 1000), channel: BACKLOG_CHANNEL_ID }), {
+        color: COLORS.DANGER,
+      })
     );
   }
 
@@ -114,22 +128,27 @@ async function handleBackupConfirm(client, interaction) {
   try {
     restoreInfo = await restoreBackup(mapName, backupFile);
   } catch (e) {
-    return interaction.editReply(t("restore.failed", { error: String(e.message || e) }));
+    return interaction.editReply(
+      styled(t("restore.failed", { error: String(e.message || e) }), { color: COLORS.DANGER })
+    );
   }
 
   // Log restore
   try {
     const logChannel = await client.channels.fetch(BACKUPS_LOG_CHANNEL_ID);
     await logChannel.send(
-      t("restore.logEntry", {
-        userId: interaction.user.id,
-        map: mapName,
-        backup: backupFile,
-        preRestoreLine: restoreInfo.preRestorePath
-          ? t("restore.preRestoreLine", { file: path.basename(restoreInfo.preRestorePath) })
-          : "",
-        date: fmtDate(new Date()),
-      })
+      styled(
+        t("restore.logEntry", {
+          userId: interaction.user.id,
+          map: mapName,
+          backup: backupFile,
+          preRestoreLine: restoreInfo.preRestorePath
+            ? t("restore.preRestoreLine", { file: path.basename(restoreInfo.preRestorePath) })
+            : "",
+          date: fmtDate(new Date()),
+        }),
+        { color: COLORS.NEUTRAL }
+      )
     );
   } catch {
     // ignore logging failures
@@ -137,22 +156,30 @@ async function handleBackupConfirm(client, interaction) {
 
   // 3. Restart the server
   const startCmd = `${PREFIX} start ${SERVER_ID}`;
-  await interaction.editReply(t("restore.starting", { backup: backupFile, map: mapName, cmd: startCmd }));
+  await interaction.editReply(
+    styled(t("restore.starting", { backup: backupFile, map: mapName, cmd: startCmd }), { color: COLORS.BRAND })
+  );
 
   const startResult = await runWgsmCommand(client, startCmd);
   if (startResult.timedOut) {
     return interaction.editReply(
-      t("restore.startTimeout", {
-        backup: backupFile,
-        map: mapName,
-        seconds: Math.round(WAIT_MS / 1000),
-        channel: BACKLOG_CHANNEL_ID,
-      })
+      styled(
+        t("restore.startTimeout", {
+          backup: backupFile,
+          map: mapName,
+          seconds: Math.round(WAIT_MS / 1000),
+          channel: BACKLOG_CHANNEL_ID,
+        }),
+        { color: COLORS.DANGER }
+      )
     );
   }
 
   return interaction.editReply(
-    t("restore.success", { backup: backupFile, map: mapName, text: startResult.text ?? t("common.emptyReply") })
+    styled(
+      t("restore.success", { backup: backupFile, map: mapName, text: startResult.text ?? t("common.emptyReply") }),
+      { color: COLORS.SUCCESS }
+    )
   );
 }
 
@@ -160,9 +187,9 @@ async function handleBackupCancel(interaction) {
   await interaction.deferReply({ ephemeral: true });
   const userId = interaction.customId.split(":")[1];
   if (interaction.user.id !== userId) {
-    return interaction.editReply(t("common.notYourAction"));
+    return interaction.editReply(styled(t("common.notYourAction"), { color: COLORS.DANGER }));
   }
-  return interaction.editReply(t("common.cancelled"));
+  return interaction.editReply(styled(t("common.cancelled"), { color: COLORS.NEUTRAL }));
 }
 
 module.exports = { handleButtonInteraction };
