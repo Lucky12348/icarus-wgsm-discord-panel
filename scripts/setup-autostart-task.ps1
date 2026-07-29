@@ -24,6 +24,11 @@
 
 $ErrorActionPreference = "Stop"
 
+$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
+if (-not $isAdmin) {
+    throw "Ce script doit etre lance depuis une invite PowerShell (ou cmd) ouverte 'en tant qu'Administrateur'. Sans elevation, schtasks refuse de creer une tache qui s'execute en SYSTEM et renvoie une erreur XML trompeuse au lieu d'un message d'acces refuse clair."
+}
+
 $TaskName = "WGSM-Discord-Panel-Bot"
 $BotDir = (Resolve-Path "$PSScriptRoot\..").Path
 $LauncherBat = Join-Path $BotDir "run-bot.bat"
@@ -64,9 +69,9 @@ $xml = @"
   </Triggers>
   <Principals>
     <Principal id="Author">
-      <UserId>S-1-5-18</UserId>
-      <RunLevel>HighestAvailable</RunLevel>
+      <UserId>SYSTEM</UserId>
       <LogonType>ServiceAccount</LogonType>
+      <RunLevel>HighestAvailable</RunLevel>
     </Principal>
   </Principals>
   <Settings>
