@@ -1,0 +1,53 @@
+{
+  "common.emptyReply": "✅ Response received (empty content)",
+  "common.notYourAction": "⛔ This action isn't for you.",
+  "common.cancelled": "❎ Cancelled.",
+  "common.unitKB": "KB",
+  "common.unitMB": "MB",
+
+  "errors.unknownCommand": "Unknown command.",
+  "errors.commandBusy": "⏳ A command is already running (`{cmd}`), wait for its response before starting another one.",
+  "errors.commandBusyRetry": "⏳ A command is already running (`{cmd}`), try again in a moment.",
+  "errors.commandTimeout": "⚠️ No response detected within {seconds}s.\n👉 Check <#{channel}>.",
+  "errors.listMapsFailed": "❌ Could not read the saves.\nDetail: `{error}`",
+  "errors.noMaps": "⚠️ No map found (no active `*.json` file).",
+  "errors.listBackupsFailed": "❌ Could not list the backups.\nDetail: `{error}`",
+  "errors.noBackupsForMap": "⚠️ No backup found for **{map}** (files `{map}.json.backup*`).",
+
+  "result.generic": "🧾 **Result:**\n```\n{text}\n```",
+
+  "panelWgsm.intro": "🎮 **WindowsGSM Panel**\n➡️ Execution & logs in <#{channel}>",
+  "panelWgsm.buttonStart": "Start",
+  "panelWgsm.buttonStop": "Stop",
+  "panelWgsm.buttonRestart": "Restart",
+  "panelWgsm.buttonUpdate": "Update",
+  "panelWgsm.buttonInfo": "Info",
+
+  "panelBackups.intro": "📦 **Icarus Backups**\n📁 Folder: `{dir}`\n📝 Log: <#{channel}>",
+  "panelBackups.buttonManage": "Manage backups",
+  "panelBackups.buttonRefresh": "Refresh",
+
+  "panelSettings.intro": "⚙️ **Settings**\nChoose the bot's language below.",
+  "panelSettings.selectPlaceholder": "Choose a language…",
+  "panelSettings.languageFr": "🇫🇷 Français",
+  "panelSettings.languageEn": "🇬🇧 English",
+  "panelSettings.changed": "✅ Language set to **{language}**.",
+
+  "backupFlow.selectMapPlaceholder": "Choose a map…",
+  "backupFlow.selectMapPrompt": "Select a **map** to see its backups (with date/time).",
+  "backupFlow.selectBackupPlaceholder": "Choose a backup to restore…",
+  "backupFlow.selectBackupPrompt": "Map: **{map}**\nChoose a **backup** (date/time + size).",
+  "backupFlow.confirmPrompt": "⚠️ **Confirmation**\nMap: **{map}**\nSelected backup: `{backup}`\n{infoLine}⏹️ The server will first be **stopped**, then the current `{map}.json` will be renamed to `.pre_restore_...` before activating this backup.\n▶️ The server will then be **restarted automatically**.",
+  "backupFlow.confirmInfoLine": "🕒 Backup: **{date}** • {size}\n",
+  "backupFlow.confirmButtonConfirm": "Confirm restore",
+  "backupFlow.confirmButtonCancel": "Cancel",
+
+  "restore.stopping": "⏹️ Stopping the server before restoring: `{cmd}`\n⏳ Waiting for response...",
+  "restore.stopTimeout": "⚠️ No response to the stop command within {seconds}s.\n👉 Check <#{channel}> before retrying (the save file was not touched).",
+  "restore.failed": "❌ Restore failed after stopping the server.\nDetail: `{error}`\n👉 The server remains stopped, remember to restart it manually from the panel.",
+  "restore.starting": "✅ Backup restored: `{backup}` → `{map}.json`\n▶️ Starting the server: `{cmd}`\n⏳ Waiting for response...",
+  "restore.startTimeout": "✅ Backup restored: `{backup}` → `{map}.json`\n⚠️ No response to the start command within {seconds}s.\n👉 Check <#{channel}>.",
+  "restore.success": "✅ Backup restored: `{backup}` → `{map}.json`\n▶️ Server restarted.\n\n🧾 **Result:**\n```\n{text}\n```",
+  "restore.logEntry": "📦 **Restore**\n👤 User: <@{userId}>\n🗺️ Map: **{map}**\n⬅️ Backup: `{backup}`\n➡️ Active: `{map}.json`\n{preRestoreLine}🕒 {date}",
+  "restore.preRestoreLine": "🛟 Previous active save: `{file}`\n"
+}
