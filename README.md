@@ -1,56 +1,43 @@
 # icarus-wgsm-discord-panel
 
-Bot Discord (discord.js v14) qui sert de panneau de contrôle pour un serveur
-Icarus géré via [WindowsGSM](https://github.com/WindowsGSM/WindowsGSM).
+Discord bot that serves as a homemade control panel for a server between
+friends running Icarus, managed via [WindowsGSM](https://github.com/WindowsGSM/WindowsGSM).
 
-## Fonctionnalités
+## Functionalities
 
-- **Panel serveur** : boutons Start / Stop / Restart / Update / Info qui
-  envoient la commande correspondante au bot WindowsGSM dans un salon
-  "backlog", puis renvoient sa réponse à l'utilisateur.
-- **Panel backups** : liste les maps sauvegardées, permet de choisir un
-  backup à restaurer (avec confirmation), journalise l'opération dans un
-  salon de logs et redémarre automatiquement le serveur après restauration.
-- Accès restreint aux membres ayant la permission Discord `Administrator`.
+- **Server panel**: Start / Stop / Restart / Update / Info buttons that
+  send the corresponding command to the WindowsGSM bot in a "backlog"
+  channel, then return its response to the user.
+- **Backups panel**: lists saved maps, lets you choose a backup to
+  restore (with confirmation), logs the operation in a log channel, and
+  automatically restarts the server after restoration.
+- Access restricted to members with the Discord `Administrator` permission.
 
-## Prérequis
-
-- Node.js 18+
-- Un bot Discord créé sur le [Developer Portal](https://discord.com/developers/applications)
-  avec les intents `Guilds`, `Guild Messages` et `Message Content` activés.
-- Un serveur géré par WindowsGSM (ou compatible) qui répond aux commandes
-  textuelles dans un salon dédié.
-
-## Installation
+## Install
 
 ```bash
 npm install
 cp .env.example .env
 ```
 
-Renseigne les variables dans `.env` :
-
-| Variable | Description |
-|---|---|
-| `DISCORD_TOKEN` | Token du bot Discord |
-| `PANEL_CHANNEL_ID` | Salon où s'affiche le panel de contrôle serveur |
-| `BACKLOG_CHANNEL_ID` | Salon où les commandes sont envoyées au bot WindowsGSM |
-| `SERVER_ID` | ID du serveur géré par WindowsGSM |
-| `CMD_PREFIX` | Préfixe de commande du bot WindowsGSM (par défaut `!wgsm`) |
-| `WGSM_BOT_ID` | ID du bot WindowsGSM (pour identifier ses réponses) |
-| `WAIT_MS` | Délai d'attente d'une réponse avant timeout (ms) |
-| `BACKUPS_CHANNEL_ID` | Salon du panel de gestion des backups (optionnel) |
-| `BACKUPS_LOG_CHANNEL_ID` | Salon de log des restaurations |
-| `PROSPECTS_DIR` | Chemin local vers le dossier des sauvegardes Icarus |
-
-## Lancement
+## Starting
 
 ```bash
 npm start
 ```
 
-## ⚠️ Sécurité
+##  `.env` :
 
-Ne commite jamais ton fichier `.env` : il contient le token du bot. Si un
-token a déjà été exposé (dépôt public, capture d'écran, etc.), régénère-le
-immédiatement depuis le Developer Portal Discord.
+| Variable | Description |
+|---|---|
+| `DISCORD_TOKEN` | Discord bot token |
+| `PANEL_CHANNEL_ID` | Channel where the server control panel is displayed |
+| `BACKLOG_CHANNEL_ID` | Channel where commands are sent to the WindowsGSM bot |
+| `SERVER_ID` | ID of the server managed by WindowsGSM |
+| `CMD_PREFIX` | Command prefix for the WindowsGSM bot (default `!wgsm`) |
+| `WGSM_BOT_ID` | ID of the WindowsGSM bot (to identify its responses) |
+| `WAIT_MS` | Delay to wait for a response before timing out (ms) |
+| `BACKUPS_CHANNEL_ID` | Channel for the backups management panel (optional) |
+| `BACKUPS_LOG_CHANNEL_ID` | Log channel for restorations |
+| `PROSPECTS_DIR` | Local path to the Icarus saves folder |
+
