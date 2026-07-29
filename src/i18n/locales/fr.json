@@ -14,7 +14,7 @@
   "errors.listBackupsFailed": "❌ Impossible de lister les backups.\n\nDétail : `{error}`",
   "errors.noBackupsForMap": "⚠️ Aucun backup trouvé pour **{map}** (fichiers `{map}.json.backup*`).",
 
-  "result.generic": "# 🧾 Résultat\n\n```\n{text}\n```",
+  "result.generic": "# 🧾 Résultat\n\n{text}",
 
   "panelWgsm.intro": "# 🎮 Panel WindowsGSM\n\n➡️ Exécution & logs dans <#{channel}>",
   "panelWgsm.buttonStart": "Démarrer",
@@ -23,7 +23,7 @@
   "panelWgsm.buttonUpdate": "Mettre à jour",
   "panelWgsm.buttonInfo": "Infos",
 
-  "panelBackups.intro": "# 📦 Backups Icarus\n\n📁 Dossier : `{dir}`\n📝 Log : <#{channel}>",
+  "panelBackups.intro": "# 📦 Backups Icarus\n\n📝 Log : <#{channel}>",
   "panelBackups.buttonManage": "Gérer les sauvegardes",
   "panelBackups.buttonRefresh": "Actualiser",
 
@@ -49,7 +49,7 @@
   "restore.failed": "❌ Restauration impossible après arrêt du serveur.\n\nDétail : `{error}`\n\n👉 Le serveur reste arrêté, pense à le redémarrer manuellement depuis le panel.",
   "restore.starting": "✅ Backup restauré : `{backup}` → `{map}.json`\n\n▶️ Démarrage du serveur : `{cmd}`\n⏳ Attente de la réponse...",
   "restore.startTimeout": "✅ Backup restauré : `{backup}` → `{map}.json`\n\n⚠️ Aucune réponse au démarrage en {seconds}s.\n👉 Vérifie <#{channel}>.",
-  "restore.success": "✅ Backup restauré : `{backup}` → `{map}.json`\n▶️ Serveur redémarré.\n\n🧾 **Résultat :**\n\n```\n{text}\n```",
+  "restore.success": "✅ Backup restauré : `{backup}` → `{map}.json`\n▶️ Serveur redémarré.\n\n🧾 **Résultat :**\n\n{text}",
   "restore.logEntry": "# 📦 Restore\n\n👤 Utilisateur : <@{userId}>\n🗺️ Map : **{map}**\n⬅️ Backup : `{backup}`\n➡️ Active : `{map}.json`{preRestoreLine}\n\n🕒 {date}",
   "restore.preRestoreLine": "\n🛟 Ancienne active : `{file}`"
 }

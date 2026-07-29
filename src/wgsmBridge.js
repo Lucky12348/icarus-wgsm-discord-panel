@@ -24,6 +24,11 @@ function buildWgsmCommand(action) {
   }
 }
 
+// The raw WGSM bot reply carries internal details (numeric server ID) that
+// don't mean anything to someone reading the panel - drop them so the
+// result reads as a plain human sentence.
+const ID_PATTERN = /\s*\(ID:?\s*\d+\)/gi;
+
 function extractReplyText(msg) {
   let text = msg.content?.trim() || "";
 
@@ -32,9 +37,13 @@ function extractReplyText(msg) {
     text = [
       e.title ? `**${e.title}**` : "",
       e.description || "",
-      ...(e.fields?.map((f) => `**${f.name}**\n${f.value}`) || []),
+      ...(e.fields
+        ?.filter((f) => f.name.trim().toLowerCase() !== "id")
+        .map((f) => `**${f.name}**\n${f.value}`) || []),
     ].filter(Boolean).join("\n\n");
   }
+
+  text = text.replace(ID_PATTERN, "");
 
   return text ? text.slice(0, 1800) : null;
 }

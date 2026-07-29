@@ -25,13 +25,13 @@ function buildContainer(text, { color, actionRows = [] } = {}) {
   const blocks = text.split(/\n{2,}/);
   blocks.forEach((block, index) => {
     if (index > 0) {
-      container.addSeparatorComponents((s) => s.setSpacing(SeparatorSpacingSize.Small));
+      container.addSeparatorComponents((s) => s.setSpacing(SeparatorSpacingSize.Large));
     }
     container.addTextDisplayComponents((td) => td.setContent(block));
   });
 
   if (actionRows.length) {
-    container.addSeparatorComponents((s) => s.setSpacing(SeparatorSpacingSize.Small));
+    container.addSeparatorComponents((s) => s.setSpacing(SeparatorSpacingSize.Large));
     for (const row of actionRows) {
       container.addActionRowComponents(row);
     }

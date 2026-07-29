@@ -3,7 +3,7 @@ require("dotenv").config();
 // Overridable at runtime from the settings panel (persisted via
 // settingsStore) - unlike the other values here, so it's a getter/setter
 // pair instead of a plain constant.
-let waitMs = Number(process.env.WAIT_MS || 20000);
+let waitMs = Number(process.env.WAIT_MS || 120000);
 
 function getWaitMs() {
   return waitMs;

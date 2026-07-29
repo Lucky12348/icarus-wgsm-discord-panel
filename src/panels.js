@@ -5,7 +5,6 @@ const {
   BACKUPS_CHANNEL_ID,
   BACKUPS_LOG_CHANNEL_ID,
   SETTINGS_CHANNEL_ID,
-  PROSPECTS_DIR,
   getWaitMs,
 } = require("./config");
 const { t, getLanguage, getSupportedLanguages } = require("./i18n");
@@ -61,7 +60,7 @@ async function setupBackupsPanel(client) {
   );
 
   await backupsChannel.send(
-    styled(t("panelBackups.intro", { dir: PROSPECTS_DIR, channel: BACKUPS_LOG_CHANNEL_ID }), {
+    styled(t("panelBackups.intro", { channel: BACKUPS_LOG_CHANNEL_ID }), {
       color: COLORS.BRAND,
       actionRows: [backupsRow],
     })

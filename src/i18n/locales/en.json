@@ -14,7 +14,7 @@
   "errors.listBackupsFailed": "❌ Could not list the backups.\n\nDetail: `{error}`",
   "errors.noBackupsForMap": "⚠️ No backup found for **{map}** (files `{map}.json.backup*`).",
 
-  "result.generic": "# 🧾 Result\n\n```\n{text}\n```",
+  "result.generic": "# 🧾 Result\n\n{text}",
 
   "panelWgsm.intro": "# 🎮 WindowsGSM Panel\n\n➡️ Execution & logs in <#{channel}>",
   "panelWgsm.buttonStart": "Start",
@@ -23,7 +23,7 @@
   "panelWgsm.buttonUpdate": "Update",
   "panelWgsm.buttonInfo": "Info",
 
-  "panelBackups.intro": "# 📦 Icarus Backups\n\n📁 Folder: `{dir}`\n📝 Log: <#{channel}>",
+  "panelBackups.intro": "# 📦 Icarus Backups\n\n📝 Log: <#{channel}>",
   "panelBackups.buttonManage": "Manage backups",
   "panelBackups.buttonRefresh": "Refresh",
 
@@ -49,7 +49,7 @@
   "restore.failed": "❌ Restore failed after stopping the server.\n\nDetail: `{error}`\n\n👉 The server remains stopped, remember to restart it manually from the panel.",
   "restore.starting": "✅ Backup restored: `{backup}` → `{map}.json`\n\n▶️ Starting the server: `{cmd}`\n⏳ Waiting for response...",
   "restore.startTimeout": "✅ Backup restored: `{backup}` → `{map}.json`\n\n⚠️ No response to the start command within {seconds}s.\n👉 Check <#{channel}>.",
-  "restore.success": "✅ Backup restored: `{backup}` → `{map}.json`\n▶️ Server restarted.\n\n🧾 **Result:**\n\n```\n{text}\n```",
+  "restore.success": "✅ Backup restored: `{backup}` → `{map}.json`\n▶️ Server restarted.\n\n🧾 **Result:**\n\n{text}",
   "restore.logEntry": "# 📦 Restore\n\n👤 User: <@{userId}>\n🗺️ Map: **{map}**\n⬅️ Backup: `{backup}`\n➡️ Active: `{map}.json`{preRestoreLine}\n\n🕒 {date}",
   "restore.preRestoreLine": "\n🛟 Previous active save: `{file}`"
 }
