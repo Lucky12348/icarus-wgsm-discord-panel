@@ -36,7 +36,6 @@ crashes and reboots), register it as a scheduled task, as Administrator,
 once on the server, from the project root:
 
 ```powershell
-cd path\to\wgsmd-panel-bot
 npm run setup:autostart
 ```
 
