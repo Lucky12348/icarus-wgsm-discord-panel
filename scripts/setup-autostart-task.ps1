@@ -69,8 +69,7 @@ $xml = @"
   </Triggers>
   <Principals>
     <Principal id="Author">
-      <UserId>SYSTEM</UserId>
-      <LogonType>ServiceAccount</LogonType>
+      <UserId>S-1-5-18</UserId>
       <RunLevel>HighestAvailable</RunLevel>
     </Principal>
   </Principals>
