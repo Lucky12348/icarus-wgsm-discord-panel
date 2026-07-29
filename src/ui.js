@@ -30,11 +30,16 @@ function buildContainer(text, { color, actionRows = [] } = {}) {
     container.addTextDisplayComponents((td) => td.setContent(block));
   });
 
-  if (actionRows.length) {
+  // Each entry is either a plain ActionRowBuilder, or { label, row } when a
+  // caption above the row is needed (e.g. to tell apart several selects).
+  for (const entry of actionRows) {
+    const { label, row } = entry?.row ? entry : { label: null, row: entry };
+
     container.addSeparatorComponents((s) => s.setSpacing(SeparatorSpacingSize.Large));
-    for (const row of actionRows) {
-      container.addActionRowComponents(row);
+    if (label) {
+      container.addTextDisplayComponents((td) => td.setContent(label));
     }
+    container.addActionRowComponents(row);
   }
 
   return container;

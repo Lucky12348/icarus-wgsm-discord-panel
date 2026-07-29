@@ -110,9 +110,9 @@ async function setupSettingsPanel(client) {
     styled(t("panelSettings.intro"), {
       color: COLORS.BRAND,
       actionRows: [
-        new ActionRowBuilder().addComponents(langSelect),
-        new ActionRowBuilder().addComponents(timeoutSelect),
-        new ActionRowBuilder().addComponents(autoUpdateSelect),
+        { label: t("panelSettings.languageLabel"), row: new ActionRowBuilder().addComponents(langSelect) },
+        { label: t("panelSettings.timeoutLabel"), row: new ActionRowBuilder().addComponents(timeoutSelect) },
+        { label: t("panelSettings.autoUpdateLabel"), row: new ActionRowBuilder().addComponents(autoUpdateSelect) },
       ],
     })
   );
