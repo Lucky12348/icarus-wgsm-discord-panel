@@ -33,15 +33,17 @@ npm start
 
 To keep the bot running without needing to log into the server (survives
 crashes and reboots), register it as a scheduled task, as Administrator,
-once on the server:
+once on the server, from the project root:
 
 ```powershell
-cd path\to\wgsmd-panel-bot\scripts
-.\setup-autostart-task.ps1
+cd path\to\wgsmd-panel-bot
+npm run setup:autostart
 ```
 
-This runs the bot via `run-bot.bat` (logs to `bot.log`), starts it at
-Windows boot, and restarts it automatically if it crashes.
+This registers a scheduled task that runs the bot via `run-bot.bat` (logs
+to `bot.log`), starts it at Windows boot without requiring a logged-in
+user, and restarts it automatically if it crashes — then immediately
+starts the bot, without waiting for a reboot.
 
 ## `.env`
 
