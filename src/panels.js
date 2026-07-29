@@ -6,6 +6,7 @@ const {
   BACKUPS_LOG_CHANNEL_ID,
   SETTINGS_CHANNEL_ID,
   getWaitMs,
+  getAutoUpdateRestartEnabled,
 } = require("./config");
 const { t, getLanguage, getSupportedLanguages } = require("./i18n");
 const { styled, COLORS } = require("./ui");
@@ -96,10 +97,23 @@ async function setupSettingsPanel(client) {
       }))
     );
 
+  const autoUpdateEnabled = getAutoUpdateRestartEnabled();
+  const autoUpdateSelect = new StringSelectMenuBuilder()
+    .setCustomId("settings_autoupdate_select")
+    .setPlaceholder(t("panelSettings.autoUpdatePlaceholder"))
+    .addOptions([
+      { label: t("panelSettings.autoUpdateOn"), value: "on", default: autoUpdateEnabled },
+      { label: t("panelSettings.autoUpdateOff"), value: "off", default: !autoUpdateEnabled },
+    ]);
+
   await settingsChannel.send(
     styled(t("panelSettings.intro"), {
       color: COLORS.BRAND,
-      actionRows: [new ActionRowBuilder().addComponents(langSelect), new ActionRowBuilder().addComponents(timeoutSelect)],
+      actionRows: [
+        new ActionRowBuilder().addComponents(langSelect),
+        new ActionRowBuilder().addComponents(timeoutSelect),
+        new ActionRowBuilder().addComponents(autoUpdateSelect),
+      ],
     })
   );
 }

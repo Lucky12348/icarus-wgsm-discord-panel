@@ -34,6 +34,10 @@
   "panelSettings.changed": "✅ Language set to **{language}**.",
   "panelSettings.timeoutPlaceholder": "Choose a wait time…",
   "panelSettings.timeoutChanged": "✅ Wait time set to **{seconds}s**.",
+  "panelSettings.autoUpdatePlaceholder": "Auto-restart after WGSM update…",
+  "panelSettings.autoUpdateOn": "✅ Enabled",
+  "panelSettings.autoUpdateOff": "🚫 Disabled",
+  "panelSettings.autoUpdateChanged": "✅ Auto-restart after a WGSM update: **{state}**.",
 
   "backupFlow.selectMapPlaceholder": "Choose a map…",
   "backupFlow.selectMapPrompt": "Select a **map** to see its backups (with date/time).",
@@ -60,5 +64,9 @@
   "update.stillBlocked": "❌ WindowsGSM still refuses to update even after stopping the server.\n\nDetail: `{text}`\n\n👉 The server remains stopped, remember to restart it manually from the panel.",
   "update.restarting": "✅ Update done.\n\n▶️ Restarting the server: `{cmd}`\n⏳ Waiting for response...",
   "update.restartTimeout": "✅ Update done.\n\n⚠️ No response to the start command within {seconds}s.\n👉 Check <#{channel}>.",
-  "update.success": "✅ Update done, server restarted.\n\n🧾 **Result:**\n\n{text}"
+  "update.success": "✅ Update done, server restarted.\n\n🧾 **Result:**\n\n{text}",
+
+  "autoUpdateAlert.restarting": "🔄 Automatic update detected (WindowsGSM).\n\n▶️ Restarting the server: `{cmd}`\n⏳ Waiting for response...",
+  "autoUpdateAlert.restartTimeout": "🔄 Automatic update detected (WindowsGSM).\n\n⚠️ No response to the start command within {seconds}s.\n👉 Check <#{channel}>.",
+  "autoUpdateAlert.success": "✅ Automatic update detected, server restarted.\n\n🧾 **Result:**\n\n{text}"
 }

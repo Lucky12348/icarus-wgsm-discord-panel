@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } 
 const fs = require("fs/promises");
 const path = require("path");
 const { t, setLanguage, getSupportedLanguages } = require("../i18n");
-const { PROSPECTS_DIR, setWaitMs } = require("../config");
+const { PROSPECTS_DIR, setWaitMs, setAutoUpdateRestartEnabled } = require("../config");
 const { listBackupsForMap } = require("../backups");
 const { fmtDate, fmtSize } = require("../format");
 const { saveSettings } = require("../settingsStore");
@@ -30,6 +30,9 @@ async function handleSelectMenuInteraction(client, interaction) {
   }
   if (customId === "settings_timeout_select") {
     return handleTimeoutSelect(client, interaction);
+  }
+  if (customId === "settings_autoupdate_select") {
+    return handleAutoUpdateSelect(client, interaction);
   }
 }
 
@@ -163,6 +166,28 @@ async function handleTimeoutSelect(client, interaction) {
     await setupPanels(client);
   } catch (err) {
     console.error("Failed to refresh panels after a wait time change:", err);
+  }
+}
+
+async function handleAutoUpdateSelect(client, interaction) {
+  const enabled = interaction.values[0] === "on";
+
+  setAutoUpdateRestartEnabled(enabled);
+  try {
+    await saveSettings({ autoUpdateRestartEnabled: enabled });
+  } catch (err) {
+    console.error("Could not persist the auto-update restart setting:", err);
+  }
+
+  await interaction.deferReply({ ephemeral: true });
+  const state = t(enabled ? "panelSettings.autoUpdateOn" : "panelSettings.autoUpdateOff");
+  await interaction.editReply(styled(t("panelSettings.autoUpdateChanged", { state }), { color: COLORS.SUCCESS }));
+
+  // Re-render the settings panel so the new default is pre-selected.
+  try {
+    await setupPanels(client);
+  } catch (err) {
+    console.error("Failed to refresh panels after an auto-update setting change:", err);
   }
 }
 

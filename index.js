@@ -5,6 +5,7 @@ const { setLanguage } = require("./src/i18n");
 const { loadSettings } = require("./src/settingsStore");
 const { setupPanels } = require("./src/panels");
 const { attachBacklogListener } = require("./src/wgsmBridge");
+const { attachAlertListener } = require("./src/alertWatcher");
 const { handleButtonInteraction } = require("./src/interactions/buttons");
 const { handleSelectMenuInteraction } = require("./src/interactions/selectMenus");
 
@@ -23,6 +24,9 @@ client.once(Events.ClientReady, async () => {
     const settings = await loadSettings();
     if (settings.language) setLanguage(settings.language);
     if (settings.waitMs) config.setWaitMs(settings.waitMs);
+    if (typeof settings.autoUpdateRestartEnabled === "boolean") {
+      config.setAutoUpdateRestartEnabled(settings.autoUpdateRestartEnabled);
+    }
   } catch (err) {
     console.error("Could not load persisted settings, falling back to the default language:", err);
   }
@@ -49,6 +53,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 });
 
 attachBacklogListener(client);
+attachAlertListener(client);
 
 // Fatal errors exit the process on purpose: a scheduled task / service on
 // the host is expected to restart it into a clean state (see scripts/).

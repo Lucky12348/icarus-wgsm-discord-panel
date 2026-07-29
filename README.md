@@ -11,6 +11,14 @@ friends running Icarus, managed via [WindowsGSM](https://github.com/WindowsGSM/W
 - **Backups panel**: lists saved maps, lets you choose a backup to
   restore (with confirmation), stops the server, restores the backup,
   logs the operation in a log channel, and restarts the server.
+- **Update**: if WindowsGSM refuses to update because the server is
+  running, the bot stops it, retries the update, then restarts it
+  automatically - no manual stop/update/start dance.
+- **Auto-update alerts**: WindowsGSM's own "Auto Update" feature updates
+  and stops the server by itself, then posts a Discord alert (in
+  `ALERTS_CHANNEL_ID`) without restarting it. The bot watches that channel
+  and restarts the server automatically when it sees that alert. Can be
+  toggled from the settings panel.
 - Access is controlled by Discord channel permissions: whoever can see
   and use the panel channel can use it. No extra role/permission check
   is enforced in code — manage access by granting/revoking channel
@@ -51,7 +59,8 @@ starts the bot, without waiting for a reboot.
 | `DISCORD_TOKEN` | Discord bot token |
 | `PANEL_CHANNEL_ID` | Channel where the server control panel is displayed |
 | `BACKLOG_CHANNEL_ID` | Channel where commands are sent to the WindowsGSM bot |
-| `SETTINGS_CHANNEL_ID` | Channel for the settings panel (language, wait time - optional) |
+| `SETTINGS_CHANNEL_ID` | Channel for the settings panel (language, wait time, auto-update restart - optional) |
+| `ALERTS_CHANNEL_ID` | Channel where WindowsGSM posts its own Discord alerts (used to detect its "Auto Update" alert - optional) |
 | `SERVER_ID` | ID of the server managed by WindowsGSM |
 | `CMD_PREFIX` | Command prefix for the WindowsGSM bot (default `!wgsm`) |
 | `WGSM_BOT_ID` | ID of the WindowsGSM bot (to identify its responses) |
@@ -70,6 +79,7 @@ src/
   format.js                     date/size formatting, delay()
   settingsStore.js              persists runtime settings (data/settings.json)
   wgsmBridge.js                 sends commands to the WindowsGSM bot, matches replies
+  alertWatcher.js                watches ALERTS_CHANNEL_ID for WGSM's own "Auto Update" alert
   backups.js                    save/backup listing and restore logic
   panels.js                     builds and (re)posts the Discord panels
   i18n/

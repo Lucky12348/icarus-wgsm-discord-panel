@@ -34,6 +34,10 @@
   "panelSettings.changed": "✅ Langue définie sur **{language}**.",
   "panelSettings.timeoutPlaceholder": "Choisir un délai d'attente…",
   "panelSettings.timeoutChanged": "✅ Délai d'attente défini sur **{seconds}s**.",
+  "panelSettings.autoUpdatePlaceholder": "Redémarrage auto après update WGSM…",
+  "panelSettings.autoUpdateOn": "✅ Activé",
+  "panelSettings.autoUpdateOff": "🚫 Désactivé",
+  "panelSettings.autoUpdateChanged": "✅ Redémarrage automatique après mise à jour WGSM : **{state}**.",
 
   "backupFlow.selectMapPlaceholder": "Choisir une map…",
   "backupFlow.selectMapPrompt": "Sélectionne une **map** pour voir ses backups (avec date/heure).",
@@ -60,5 +64,9 @@
   "update.stillBlocked": "❌ La mise à jour est toujours refusée par WindowsGSM après l'arrêt du serveur.\n\nDétail : `{text}`\n\n👉 Le serveur reste arrêté, pense à le redémarrer manuellement depuis le panel.",
   "update.restarting": "✅ Mise à jour terminée.\n\n▶️ Redémarrage du serveur : `{cmd}`\n⏳ Attente de la réponse...",
   "update.restartTimeout": "✅ Mise à jour terminée.\n\n⚠️ Aucune réponse au redémarrage en {seconds}s.\n👉 Vérifie <#{channel}>.",
-  "update.success": "✅ Mise à jour terminée, serveur redémarré.\n\n🧾 **Résultat :**\n\n{text}"
+  "update.success": "✅ Mise à jour terminée, serveur redémarré.\n\n🧾 **Résultat :**\n\n{text}",
+
+  "autoUpdateAlert.restarting": "🔄 Mise à jour automatique détectée (WindowsGSM).\n\n▶️ Redémarrage du serveur : `{cmd}`\n⏳ Attente de la réponse...",
+  "autoUpdateAlert.restartTimeout": "🔄 Mise à jour automatique détectée (WindowsGSM).\n\n⚠️ Aucune réponse au redémarrage en {seconds}s.\n👉 Vérifie <#{channel}>.",
+  "autoUpdateAlert.success": "✅ Mise à jour automatique détectée, serveur redémarré.\n\n🧾 **Résultat :**\n\n{text}"
 }
